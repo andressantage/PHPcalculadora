@@ -1,94 +1,3 @@
-<?php
-    session_start();
-    if(!isset($_SESSION['num1'])){
-        $_SESSION['num1']='';
-        $_SESSION['num2']='';
-        $_SESSION['opera']='';
-    }
-
-    if (!isset($_POST['opera']) && !isset($_SESSION['revisar'])) {
-        if (isset($_POST['numero'])) {
-            if (isset($_SESSION['num1'])) {
-                $_SESSION['num1'] .= $_POST['numero'];
-            } else {
-                $_SESSION['num1'] =  $_POST['numero'];
-            }
-            $_SESSION['ver'] = $_SESSION['num1'];
-            /* var_dump($_SESSION['ver']); */
-        }
-    }else{
-        $_SESSION['revisar']=1;
-    }
-
-    if (isset($_SESSION['revisar'])) {
-        if (isset($_POST['opera'])) {
-            $_SESSION['opera']=$_POST['opera'];
-            $_SESSION['ver'] .=$_POST['opera'];
-        }
-        if (isset($_POST['numero'])) {
-            if (isset($_SESSION['num2'])) {
-                $_SESSION['num2'].= $_POST['numero'];
-            } else {
-                $_SESSION['num2'] =  $_POST['numero'];
-            }
-            $_SESSION['ver'] .= $_POST['numero'];
-           /*  var_dump($_SESSION['num2']);
-            var_dump($_SESSION['ver']); */
-        }
-    }
-
-    if (isset($_POST['calcular'])) {
-        $_SESSION['ver'] ='';
-        $num1=$_SESSION['num1'];
-        $num2=$_SESSION['num2'];
-        //var_dump($_SESSION['num2']);
-        $opera=$_SESSION['opera'];
-        switch ($opera) {
-            case '+':
-                $p=$num1+$num2;
-                $resultado=$p;
-                $_SESSION['ver']=$resultado;
-                break;
-            case '-':
-                $p=$num1-$num2;
-                $resultado=$p;
-                $_SESSION['ver']=$resultado;
-                break;
-            case '÷':
-                if($num2==0){
-                    $error=1;
-                    $_SESSION['ver'] = 0;
-                    unset($_SESSION['num1']);
-                    unset($_SESSION['num2']);
-                    unset($_SESSION['opera']);
-                    unset($_SESSION['revisar']);
-                    break;
-                }else{
-                    $p=$num1/$num2;
-                    $resultado=$p;
-                    $_SESSION['ver']=$resultado;
-                    break;
-                }             
-            case 'x':
-                $p=$num1*$num2;
-                $resultado=$p;
-                $_SESSION['ver']=$resultado;
-                break;
-        }
-        unset($_SESSION['num1']);
-        unset($_SESSION['num2']);
-        unset($_SESSION['opera']);
-        unset($_SESSION['revisar']);
-    } 
-
-    if (isset($_POST['todo'])) {
-        $_SESSION['ver'] = 0;
-        unset($_SESSION['num1']);
-        unset($_SESSION['num2']);
-        unset($_SESSION['opera']);
-        unset($_SESSION['revisar']);
-    }
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -289,22 +198,16 @@
     </style>
 </head>
 <body>
-<?php  if(isset($error)){?>
-    <script><?php echo  "alert('Carajito ya la embarraste. Recuerda que no se puede dividir por cero :(')"; ?> </script>
- <?php }?>
 <div class="caja">
     <div class="container d-flex justify-content-center align-items-center flex-column">
         <div class="container d-flex justify-content-center align-items-center flex-colun">
-            <?php  if(isset($_SESSION['correo'])){?>
-                <p class="nombre"><?php echo  "Hola ".$_SESSION['nombre']." buen día :)"; ?> </p>
-            <?php }?>
             <a href="salir.php"><button class="btn btn-warning tablero letraBoton" name="uno">Cerrar sesión</button></a>
         </div>
         
     <form method="POST"> 
         <table>
             <tr> 
-                <td  colspan="4"><input class="btn btn-light letra tablero" type="text" name="resultado" value="<?php  if(isset($_SESSION['ver'])){?> <?php echo $_SESSION['ver'] ?> <?php } ?>"></td>
+                <td colspan="4"><input class="btn btn-light letra tablero" type="text" name="resultado" ></td>
             </tr>
             <tr>
                 <td><input class="btn btn-light" type="submit" name="numero" value="7"></td>
